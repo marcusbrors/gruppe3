@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type KeyboardEvent } from 'react'
 import { shuffleInPlace } from '../lib/seeding'
+import { useLocale } from '../context/LocaleContext'
 
 export interface DraftEntrant {
   key: string
@@ -16,6 +17,7 @@ function newKey(): string {
 }
 
 export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
+  const { t } = useLocale()
   const [draftName, setDraftName] = useState('')
   const [bulkOpen, setBulkOpen] = useState(false)
   const [bulkText, setBulkText] = useState('')
@@ -69,10 +71,8 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-sm font-semibold text-forest">Deltakere / lag</p>
-          <p className="text-xs text-forest/50">
-            Rekkefølgen = seeding. Seed 1 er høyest (favoritt).
-          </p>
+          <p className="text-sm font-semibold text-forest">{t('entrants')}</p>
+          <p className="text-xs text-forest/50">{t('entrantsHint')}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
@@ -81,7 +81,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
             disabled={entrants.length < 2}
             className="rounded-md border border-forest/15 bg-surface/70 px-2.5 py-1.5 text-xs font-medium text-forest/70 transition hover:border-moss/40 disabled:opacity-40"
           >
-            Tilfeldig seed
+            {t('shuffleSeeds')}
           </button>
           <button
             type="button"
@@ -91,7 +91,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
             }}
             className="rounded-md border border-forest/15 bg-surface/70 px-2.5 py-1.5 text-xs font-medium text-forest/70 transition hover:border-moss/40"
           >
-            {bulkOpen ? 'Skjul lim inn' : 'Lim inn liste'}
+            {bulkOpen ? t('hidePaste') : t('pasteList')}
           </button>
         </div>
       </div>
@@ -102,7 +102,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
             value={bulkText}
             onChange={(e) => setBulkText(e.target.value)}
             rows={6}
-            placeholder="Én deltaker per linje. Første linje blir seed 1."
+            placeholder={t('pastePlaceholder')}
             className="w-full rounded-md border border-forest/15 bg-surface/80 px-3 py-2 font-mono text-sm outline-none ring-moss/30 focus:ring-2"
           />
           <button
@@ -110,7 +110,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
             onClick={applyBulk}
             className="mt-2 rounded-md bg-coral px-3 py-1.5 text-xs font-semibold text-sand"
           >
-            Bruk liste (erstatter)
+            {t('useList')}
           </button>
         </div>
       )}
@@ -128,7 +128,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
               value={entrant.name}
               onChange={(e) => rename(index, e.target.value)}
               className="min-w-0 flex-1 rounded border border-transparent bg-transparent px-2 py-1 text-sm outline-none focus:border-forest/15 focus:bg-surface"
-              aria-label={`Seed ${index + 1} navn`}
+              aria-label={`${t('seed')} ${index + 1}`}
             />
             <div className="flex shrink-0 gap-1">
               <button
@@ -136,8 +136,8 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
                 onClick={() => move(index, -1)}
                 disabled={index === 0}
                 className="rounded px-2 py-1 text-xs text-forest/60 hover:bg-mint/50 disabled:opacity-30"
-                aria-label="Flytt opp (bedre seed)"
-                title="Bedre seed"
+                aria-label={t('betterSeed')}
+                title={t('betterSeed')}
               >
                 ↑
               </button>
@@ -146,8 +146,8 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
                 onClick={() => move(index, 1)}
                 disabled={index === entrants.length - 1}
                 className="rounded px-2 py-1 text-xs text-forest/60 hover:bg-mint/50 disabled:opacity-30"
-                aria-label="Flytt ned (dårligere seed)"
-                title="Dårligere seed"
+                aria-label={t('worseSeed')}
+                title={t('worseSeed')}
               >
                 ↓
               </button>
@@ -155,7 +155,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
                 type="button"
                 onClick={() => remove(index)}
                 className="rounded px-2 py-1 text-xs text-coral/80 hover:bg-coral/10"
-                aria-label="Fjern"
+                aria-label={t('remove')}
               >
                 ✕
               </button>
@@ -166,7 +166,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
 
       {entrants.length === 0 && (
         <p className="rounded-md border border-dashed border-forest/20 px-3 py-4 text-center text-sm text-forest/50">
-          Legg til minst 2 deltakere eller lag.
+          {t('needTwo')}
         </p>
       )}
 
@@ -175,7 +175,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
           value={draftName}
           onChange={(e) => setDraftName(e.target.value)}
           onKeyDown={onDraftKey}
-          placeholder="Legg til navn / lag…"
+          placeholder={t('addPlaceholder')}
           className="min-w-0 flex-1 rounded-md border border-forest/15 bg-surface/80 px-3 py-2 text-sm outline-none ring-moss/30 focus:ring-2"
         />
         <button
@@ -183,7 +183,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
           onClick={() => addOne()}
           className="rounded-md border border-forest/15 bg-mint/40 px-3 py-2 text-sm font-semibold text-forest transition hover:bg-mint"
         >
-          Legg til
+          {t('add')}
         </button>
       </div>
     </div>

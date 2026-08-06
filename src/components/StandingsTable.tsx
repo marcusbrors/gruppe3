@@ -1,9 +1,14 @@
 import type { Tournament } from '../types/tournament'
 import { getStandings } from '../lib/tournamentLogic'
+import { useLocale } from '../context/LocaleContext'
 import { PlayerHoverName } from './PlayerHoverName'
 
 export function StandingsTable({ tournament }: { tournament: Tournament }) {
+  const { t, locale } = useLocale()
   const standings = getStandings(tournament)
+  const playedHeader = locale === 'en' ? 'P' : 'K'
+  const winsHeader = locale === 'en' ? 'W' : 'S'
+  const lossesHeader = locale === 'en' ? 'L' : 'T'
 
   return (
     <div className="overflow-x-auto rounded-lg border border-forest/10 bg-surface/60">
@@ -11,11 +16,11 @@ export function StandingsTable({ tournament }: { tournament: Tournament }) {
         <thead className="border-b border-forest/10 text-xs uppercase tracking-wide text-forest/50">
           <tr>
             <th className="px-4 py-3 font-medium">#</th>
-            <th className="px-4 py-3 font-medium">Spiller</th>
-            <th className="px-4 py-3 font-medium">K</th>
-            <th className="px-4 py-3 font-medium">S</th>
-            <th className="px-4 py-3 font-medium">T</th>
-            <th className="px-4 py-3 font-medium">Poeng</th>
+            <th className="px-4 py-3 font-medium">{t('player')}</th>
+            <th className="px-4 py-3 font-medium">{playedHeader}</th>
+            <th className="px-4 py-3 font-medium">{winsHeader}</th>
+            <th className="px-4 py-3 font-medium">{lossesHeader}</th>
+            <th className="px-4 py-3 font-medium">{t('points')}</th>
           </tr>
         </thead>
         <tbody>

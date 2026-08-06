@@ -4,30 +4,32 @@ import {
   downloadTournamentImage,
   type ExportContent,
 } from '../lib/exportTournamentImage'
-
-const OPTIONS: { value: ExportContent; label: string; hint: string }[] = [
-  {
-    value: 'both',
-    label: 'Begge',
-    hint: 'Resultater 1→sist + brackets',
-  },
-  {
-    value: 'standings',
-    label: 'Bare resultater',
-    hint: 'Plassering fra første til siste',
-  },
-  {
-    value: 'bracket',
-    label: 'Bare brackets',
-    hint: 'Kampoppsett / runder',
-  },
-]
+import { useLocale } from '../context/LocaleContext'
 
 export function ExportImageButton({ tournament }: { tournament: Tournament }) {
+  const { t } = useLocale()
   const [open, setOpen] = useState(false)
   const [content, setContent] = useState<ExportContent>('both')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+
+  const options: { value: ExportContent; label: string; hint: string }[] = [
+    {
+      value: 'both',
+      label: t('exportBoth'),
+      hint: t('exportBothHint'),
+    },
+    {
+      value: 'standings',
+      label: t('exportStandings'),
+      hint: t('exportStandingsHint'),
+    },
+    {
+      value: 'bracket',
+      label: t('exportBracket'),
+      hint: t('exportBracketHint'),
+    },
+  ]
 
   const onExport = () => {
     setBusy(true)
@@ -36,7 +38,7 @@ export function ExportImageButton({ tournament }: { tournament: Tournament }) {
       downloadTournamentImage(tournament, { content })
       setOpen(false)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke eksportere')
+      setError(err instanceof Error ? err.message : t('somethingWrong'))
     } finally {
       setBusy(false)
     }
@@ -50,16 +52,16 @@ export function ExportImageButton({ tournament }: { tournament: Tournament }) {
         className="rounded-md border-2 border-forest/30 bg-surface px-3 py-2 text-xs font-semibold text-ink transition hover:border-coral hover:text-coral"
         aria-expanded={open}
       >
-        Eksporter bilde
+        {t('exportImage')}
       </button>
 
       {open && (
         <div className="absolute right-0 top-full z-40 mt-2 w-72 rounded-lg border border-forest/15 bg-cream p-3 shadow-xl">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-forest/50">
-            Hva skal med i bildet?
+            {t('exportWhat')}
           </p>
           <div className="flex flex-col gap-2">
-            {OPTIONS.map((opt) => (
+            {options.map((opt) => (
               <label
                 key={opt.value}
                 className={[
@@ -95,7 +97,7 @@ export function ExportImageButton({ tournament }: { tournament: Tournament }) {
               onClick={() => setOpen(false)}
               className="rounded-md px-3 py-1.5 text-xs font-semibold text-forest/70 hover:text-ink"
             >
-              Avbryt
+              {t('cancel')}
             </button>
             <button
               type="button"
@@ -103,7 +105,7 @@ export function ExportImageButton({ tournament }: { tournament: Tournament }) {
               disabled={busy}
               className="rounded-md bg-coral px-3 py-1.5 text-xs font-semibold text-sand transition hover:bg-amber hover:text-sand disabled:opacity-50"
             >
-              {busy ? 'Lager…' : 'Last ned PNG'}
+              {busy ? t('exporting') : t('downloadPng')}
             </button>
           </div>
         </div>

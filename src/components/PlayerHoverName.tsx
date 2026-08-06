@@ -9,6 +9,7 @@ import { createPortal } from 'react-dom'
 import type { Tournament } from '../types/tournament'
 import { getPlayerStats } from '../lib/playerStats'
 import { formatPlayerLabel } from '../lib/tournamentLogic'
+import { useLocale } from '../context/LocaleContext'
 
 interface PlayerHoverNameProps {
   tournament: Tournament
@@ -31,6 +32,7 @@ export function PlayerHoverName({
   className = '',
   children,
 }: PlayerHoverNameProps) {
+  const { t } = useLocale()
   const tipId = useId()
   const triggerRef = useRef<HTMLSpanElement>(null)
   const [open, setOpen] = useState(false)
@@ -101,7 +103,7 @@ export function PlayerHoverName({
             <div className="mb-2 flex items-center justify-between gap-2">
               <span className="font-display text-sm font-bold text-ink">{stats.name}</span>
               <span className="rounded bg-coral/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-coral">
-                Seed #{stats.seed}
+                {t('seed')} #{stats.seed}
               </span>
             </div>
 
@@ -113,13 +115,13 @@ export function PlayerHoverName({
             </div>
 
             <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs text-forest/80">
-              <Stat label="Win %" value={`${stats.winRate}%`} accent />
-              <Stat label="Plass" value={`#${stats.rank}`} />
-              <Stat label="Kamper" value={String(stats.played)} />
-              <Stat label="S–T" value={`${stats.wins}–${stats.losses}`} />
-              <Stat label="Poeng" value={String(stats.points)} />
+              <Stat label={t('winPct')} value={`${stats.winRate}%`} accent />
+              <Stat label={t('place')} value={`#${stats.rank}`} />
+              <Stat label={t('matchesShort')} value={String(stats.played)} />
+              <Stat label={t('wl')} value={`${stats.wins}–${stats.losses}`} />
+              <Stat label={t('points')} value={String(stats.points)} />
               <Stat
-                label="Streak"
+                label={t('streak')}
                 value={
                   stats.streakType
                     ? `${stats.streakType === 'W' ? 'W' : 'L'}${stats.streak}`
@@ -129,9 +131,9 @@ export function PlayerHoverName({
             </div>
 
             <div className="mt-2 flex items-center gap-1">
-              <span className="text-[10px] uppercase tracking-wide text-forest/45">Form</span>
+              <span className="text-[10px] uppercase tracking-wide text-forest/45">{t('form')}</span>
               {stats.form.length === 0 ? (
-                <span className="text-xs text-forest/40">Ingen kamper</span>
+                <span className="text-xs text-forest/40">{t('noMatches')}</span>
               ) : (
                 stats.form.map((r, i) => (
                   <span
@@ -153,7 +155,7 @@ export function PlayerHoverName({
 
             {stats.nextOpponentName && (
               <p className="mt-2 text-[11px] text-forest/55">
-                Neste: <span className="font-medium text-ink">{stats.nextOpponentName}</span>
+                {t('next')}: <span className="font-medium text-ink">{stats.nextOpponentName}</span>
               </p>
             )}
           </div>,

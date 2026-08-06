@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { BrandAccentBar, BrandCornerOrnament } from '../components/BrandDecor'
+import { useLocale } from '../context/LocaleContext'
 import { useTournaments } from '../context/TournamentContext'
-import { FORMAT_LABELS } from '../types/tournament'
 import { progressPercent } from '../lib/tournamentLogic'
 
 export function HomePage() {
   const { tournaments, deleteTournament } = useTournaments()
+  const { t, formatName } = useLocale()
 
   return (
     <div>
@@ -15,54 +16,51 @@ export function HomePage() {
           Kjell Games AS
         </p>
         <h1 className="max-w-xl font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-          Turneringshub
+          {t('hubTitle')}
         </h1>
         <BrandAccentBar className="mt-4 max-w-[12rem]" />
-        <p className="mt-4 max-w-xl text-base text-forest/70 sm:text-lg">
-          Opprett turneringer med cup, liga, alle mot alle eller swiss stage — og oppdater
-          fremdriften underveis.
-        </p>
+        <p className="mt-4 max-w-xl text-base text-forest/70 sm:text-lg">{t('hubLead')}</p>
         <div className="mt-6">
           <Link
             to="/ny"
             className="inline-flex rounded-md bg-coral px-5 py-3 text-sm font-semibold text-sand transition hover:bg-amber hover:text-sand"
           >
-            Start ny turnering
+            {t('startNew')}
           </Link>
         </div>
       </section>
 
       <section className="animate-fade-up-delay-1">
-        <h2 className="mb-4 font-display text-lg font-bold text-forest">Dine turneringer</h2>
+        <h2 className="mb-4 font-display text-lg font-bold text-forest">{t('yourTournaments')}</h2>
 
         {tournaments.length === 0 ? (
           <div className="rounded-lg border border-dashed border-forest/20 bg-surface/40 px-6 py-12 text-center">
-            <p className="text-forest/60">Ingen turneringer ennå. Lag den første for demoen!</p>
+            <p className="text-forest/60">{t('noTournaments')}</p>
             <Link to="/ny" className="mt-4 inline-block text-sm font-semibold text-moss underline">
-              Opprett turnering
+              {t('createTournament')}
             </Link>
           </div>
         ) : (
           <ul className="flex flex-col gap-3">
-            {tournaments.map((t) => {
-              const pct = progressPercent(t)
+            {tournaments.map((tour) => {
+              const pct = progressPercent(tour)
               return (
-                <li key={t.id}>
+                <li key={tour.id}>
                   <Link
-                    to={`/turnering/${t.id}`}
+                    to={`/turnering/${tour.id}`}
                     className="block rounded-lg border border-forest/10 bg-surface/70 p-4 transition hover:border-coral/40 hover:bg-surface"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <h3 className="font-display text-xl font-bold text-ink">{t.name}</h3>
+                        <h3 className="font-display text-xl font-bold text-ink">{tour.name}</h3>
                         <p className="mt-1 text-sm text-forest/60">
-                          {FORMAT_LABELS[t.format]} · {t.players.length} deltakere ·{' '}
-                          {t.status === 'completed' ? 'Fullført' : 'Aktiv'}
+                          {formatName(tour.format)} · {tour.players.length} {t('participants')} ·{' '}
+                          {tour.status === 'completed' ? t('completed') : t('active')}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="font-display text-2xl font-bold text-moss">{pct}%</p>
-                        <p className="text-xs text-forest/50">fremdrift</p>
+                        <p className="text-xs text-forest/50">{t('progress')}</p>
                       </div>
                     </div>
                     <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-mint">
@@ -75,10 +73,10 @@ export function HomePage() {
                   <div className="mt-1 flex justify-end">
                     <button
                       type="button"
-                      onClick={() => deleteTournament(t.id)}
+                      onClick={() => deleteTournament(tour.id)}
                       className="text-xs text-forest/40 transition hover:text-coral"
                     >
-                      Slett
+                      {t('delete')}
                     </button>
                   </div>
                 </li>

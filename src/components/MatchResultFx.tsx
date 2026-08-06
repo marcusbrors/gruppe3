@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
+import { useLocale } from '../context/LocaleContext'
 
 export interface MatchFxPayload {
   winnerName: string
@@ -27,6 +28,7 @@ function particles(count: number, seed: string) {
 }
 
 export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
+  const { t } = useLocale()
   const confetti = useMemo(
     () => (payload ? particles(18, payload.winnerName) : []),
     [payload],
@@ -38,8 +40,8 @@ export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
 
   useEffect(() => {
     if (!payload) return
-    const t = window.setTimeout(onDone, 3500)
-    return () => window.clearTimeout(t)
+    const timer = window.setTimeout(onDone, 3500)
+    return () => window.clearTimeout(timer)
   }, [payload, onDone])
 
   if (!payload) return null
@@ -70,12 +72,12 @@ export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
             🏆
           </p>
           <p className="relative z-10 mt-2 font-display text-xs font-bold tracking-[0.2em] text-coral">
-            APPLAUS
+            {t('applause')}
           </p>
           <p className="relative z-10 mt-1 font-display text-2xl font-extrabold text-ink">
             {payload.winnerName}
           </p>
-          <p className="relative z-10 text-sm text-forest/70">tar seieren!</p>
+          <p className="relative z-10 text-sm text-forest/70">{t('takesWin')}</p>
         </div>
 
         {/* Loser card */}
@@ -98,7 +100,7 @@ export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
             💥
           </p>
           <p className="relative z-10 mt-1 text-xs font-bold tracking-wide text-forest/50">
-            EKSPLOSJON AV SKUFFELSE
+            {t('explosion')}
           </p>
           <p className="relative z-10 font-display text-lg font-bold text-ink">
             {payload.loserName}

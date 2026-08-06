@@ -1,5 +1,6 @@
 import type { Match, Tournament } from '../types/tournament'
-import { getRounds, roundLabel } from '../lib/tournamentLogic'
+import { getRounds } from '../lib/tournamentLogic'
+import { useLocale } from '../context/LocaleContext'
 import { MatchCard } from './MatchCard'
 
 interface BracketViewProps {
@@ -22,6 +23,7 @@ function columnHeight(firstRoundCount: number): number {
 }
 
 export function BracketView({ tournament, onPickWinner }: BracketViewProps) {
+  const { roundName } = useLocale()
   const rounds = getRounds(tournament.matches)
   const totalRounds = tournament.totalRounds ?? rounds.length
   const firstRoundCount = tournament.matches.filter((m) => m.round === rounds[0]).length
@@ -45,7 +47,7 @@ export function BracketView({ tournament, onPickWinner }: BracketViewProps) {
               style={{ width: COL_WIDTH, height }}
             >
               <h3 className="sticky top-0 z-10 mb-2 bg-cream/90 py-1 font-display text-sm font-bold uppercase tracking-wider text-forest/60 backdrop-blur-sm">
-                {roundLabel(tournament.format, round, totalRounds)}
+                {roundName(tournament.format, round, totalRounds)}
               </h3>
 
               <div className="relative" style={{ height: height - 36 }}>

@@ -1,15 +1,17 @@
 import { useDramatic } from '../context/DramaticContext'
+import { useLocale } from '../context/LocaleContext'
 
 export function DramaticToggle() {
   const { dramatic, toggleDramatic } = useDramatic()
+  const { t } = useLocale()
 
   return (
     <button
       type="button"
       onClick={toggleDramatic}
       aria-pressed={dramatic}
-      aria-label={dramatic ? 'Slå av dramatic mode' : 'Slå på dramatic mode'}
-      title="Dramatic mode: STORE BOKSTAVER"
+      aria-label={t('dramaticMode')}
+      title={t('dramaticMode')}
       className={[
         'rounded-md border-2 px-3 py-2 text-xs font-semibold transition',
         dramatic
@@ -17,7 +19,7 @@ export function DramaticToggle() {
           : 'border-forest/30 bg-surface text-ink hover:border-coral hover:text-coral',
       ].join(' ')}
     >
-      Dramatic mode
+      {t('dramaticMode')}
     </button>
   )
 }
