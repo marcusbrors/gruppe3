@@ -8,6 +8,8 @@ export type MatchStatus = 'pending' | 'ready' | 'completed'
 export interface Player {
   id: string
   name: string
+  /** 1 = høyest seed (sterkest / favoritt) */
+  seed: number
 }
 
 export interface Match {

@@ -1,5 +1,5 @@
 import type { Match, Tournament } from '../types/tournament'
-import { getPlayerName } from '../lib/tournamentLogic'
+import { formatPlayerLabel } from '../lib/tournamentLogic'
 
 interface MatchCardProps {
   tournament: Tournament
@@ -39,8 +39,8 @@ function PlayerButton({
 }
 
 export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
-  const p1 = getPlayerName(tournament, match.player1Id)
-  const p2 = getPlayerName(tournament, match.player2Id)
+  const p1 = formatPlayerLabel(tournament, match.player1Id)
+  const p2 = formatPlayerLabel(tournament, match.player2Id)
   const canPick = match.status === 'ready' || match.status === 'completed'
   const bothReady = Boolean(match.player1Id && match.player2Id)
 

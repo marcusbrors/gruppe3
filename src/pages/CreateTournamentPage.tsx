@@ -1,26 +1,22 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { SeedEditor, sampleEntrants, type DraftEntrant } from '../components/SeedEditor'
 import { useTournaments } from '../context/TournamentContext'
 import type { TournamentFormat } from '../types/tournament'
 import { FORMAT_DESCRIPTIONS, FORMAT_LABELS, FORMAT_ORDER } from '../types/tournament'
-
-const SAMPLE_PLAYERS = 'Alex\nSam\nJordan\nCasey\nRiley\nMorgan\nQuinn\nAvery'
 
 export function CreateTournamentPage() {
   const { addTournament } = useTournaments()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [format, setFormat] = useState<TournamentFormat>('cup')
-  const [playersText, setPlayersText] = useState(SAMPLE_PLAYERS)
+  const [entrants, setEntrants] = useState<DraftEntrant[]>(() => sampleEntrants())
   const [error, setError] = useState('')
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     setError('')
-    const players = playersText
-      .split(/\n|,/)
-      .map((p) => p.trim())
-      .filter(Boolean)
+    const players = entrants.map((p) => p.name.trim()).filter(Boolean)
 
     try {
       const t = addTournament(name || 'Demo-turnering', format, players)
@@ -34,7 +30,7 @@ export function CreateTournamentPage() {
     <div className="mx-auto max-w-2xl animate-fade-up">
       <h1 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">Ny turnering</h1>
       <p className="mt-2 text-forest/70">
-        Velg oppsett, legg til deltakere — så genereres kamper automatisk.
+        Velg oppsett, seed deltakere/lag — så genereres kamper automatisk.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
@@ -82,17 +78,18 @@ export function CreateTournamentPage() {
           </div>
         </fieldset>
 
-        <label className="flex flex-col gap-2">
-          <span className="text-sm font-semibold text-forest">
-            Deltakere <span className="font-normal text-forest/50">(én per linje)</span>
-          </span>
-          <textarea
-            value={playersText}
-            onChange={(e) => setPlayersText(e.target.value)}
-            rows={8}
-            className="rounded-md border border-forest/15 bg-white/80 px-3 py-2.5 font-mono text-sm outline-none ring-moss/30 focus:ring-2"
-          />
-        </label>
+        <SeedEditor entrants={entrants} onChange={setEntrants} />
+
+        {format === 'cup' && (
+          <p className="text-xs text-forest/50">
+            Cup: seed 1 møter laveste seed tidligst mulig, og topseeds møtes tidligst i finalen.
+          </p>
+        )}
+        {format === 'swiss' && (
+          <p className="text-xs text-forest/50">
+            Swiss: seed brukes i runde 1 og som tiebreaker ved lik score.
+          </p>
+        )}
 
         {error && <p className="text-sm font-medium text-coral">{error}</p>}
 

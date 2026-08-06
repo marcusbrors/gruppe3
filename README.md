@@ -29,6 +29,15 @@ På Windows PowerShell: bruk `npm.cmd install` / `npm.cmd run dev` hvis scripts 
 | **Alle mot alle** | Enkel serie — alle møter alle én gang |
 | **Swiss stage** | Flere runder; spillere med lik score møtes. Neste runde genereres automatisk |
 
+## Seeding
+
+Ved opprettelse kan du rangere deltakere/lag (seed 1 = høyest).
+
+- **Cup:** standard bracket-seeding (1 vs N, topseeds møtes sent)
+- **Swiss:** seed styrer runde 1 og er tiebreaker
+- **Liga / alle mot alle:** seed styrer kampoppsett / rekkefølge
+- Flytt ↑↓, lim inn liste, eller «Tilfeldig seed»
+
 ## Demo-flyt
 
 1. **Oversikt** — se lagrede turneringer og fremdrift

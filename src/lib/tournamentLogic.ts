@@ -1,5 +1,6 @@
 import type { Match, Player, Standing, Tournament, TournamentFormat } from '../types/tournament'
 import { createId } from './ids'
+import { placeSeedsInBracket, sortBySeed } from './seeding'
 
 function nextPowerOfTwo(n: number): number {
   let p = 1
@@ -12,7 +13,7 @@ function swissRoundCount(playerCount: number): number {
   return Math.max(3, Math.ceil(Math.log2(Math.max(2, playerCount))))
 }
 
-/** Cup: single-elimination bracket with byes when needed. */
+/** Cup: single-elimination bracket with standard seeding and byes when needed. */
 export function buildCup(players: Player[]): Match[] {
   const size = nextPowerOfTwo(Math.max(2, players.length))
   const rounds = Math.log2(size)
@@ -47,8 +48,8 @@ export function buildCup(players: Player[]): Match[] {
     }
   }
 
-  const seeded: (Player | null)[] = [...players]
-  while (seeded.length < size) seeded.push(null)
+  // Seed 1 vs seed N, seed 2 vs N-1, … so top seeds meet late
+  const seeded = placeSeedsInBracket(sortBySeed(players), size)
 
   const firstRound = byRound[0]
   for (let i = 0; i < firstRound.length; i++) {
@@ -76,18 +77,19 @@ export function buildCup(players: Player[]): Match[] {
   return matches
 }
 
-/** Alle mot alle: single round robin (flat list). */
+/** Alle mot alle: single round robin (flat list), ordered by seed. */
 export function buildRoundRobin(players: Player[]): Match[] {
+  const ordered = sortBySeed(players)
   const matches: Match[] = []
   let index = 0
-  for (let i = 0; i < players.length; i++) {
-    for (let j = i + 1; j < players.length; j++) {
+  for (let i = 0; i < ordered.length; i++) {
+    for (let j = i + 1; j < ordered.length; j++) {
       matches.push({
         id: createId('m'),
         round: 1,
         index: index++,
-        player1Id: players[i].id,
-        player2Id: players[j].id,
+        player1Id: ordered[i].id,
+        player2Id: ordered[j].id,
         winnerId: null,
         status: 'ready',
       })
@@ -98,10 +100,10 @@ export function buildRoundRobin(players: Player[]): Match[] {
 
 /**
  * Liga: double round robin scheduled into rounds (circle method).
- * Each pair plays twice (hjemme/borte).
+ * Each pair plays twice (hjemme/borte). Seed order affects schedule.
  */
 export function buildLeague(players: Player[]): Match[] {
-  const firstLeg = buildCircleRounds(players)
+  const firstLeg = buildCircleRounds(sortBySeed(players))
   const secondLeg = firstLeg.map((m) => ({
     ...m,
     id: createId('m'),
@@ -191,10 +193,11 @@ export function buildSwissRound(
   const wins = getWinsMap(players, existingMatches)
   const hadBye = playersWithBye(existingMatches)
 
+  // Higher score first; seed as tiebreaker (seed 1 before seed 2)
   const ordered = [...players].sort((a, b) => {
     const dw = (wins.get(b.id) ?? 0) - (wins.get(a.id) ?? 0)
     if (dw !== 0) return dw
-    return a.name.localeCompare(b.name, 'no')
+    return a.seed - b.seed || a.name.localeCompare(b.name, 'no')
   })
 
   // Give bye to lowest-ranked player who hasn't had one (if odd)
@@ -251,10 +254,11 @@ export function createTournament(
   format: TournamentFormat,
   playerNames: string[],
 ): Tournament {
+  // Rekkefølgen i lista = seed (første = seed 1)
   const players: Player[] = playerNames
     .map((n) => n.trim())
     .filter(Boolean)
-    .map((name) => ({ id: createId('p'), name }))
+    .map((name, index) => ({ id: createId('p'), name, seed: index + 1 }))
 
   if (players.length < 2) {
     throw new Error('Trenger minst 2 deltakere')
@@ -413,12 +417,29 @@ export function getStandings(tournament: Tournament): Standing[] {
     loser.losses++
   }
 
-  return [...map.values()].sort((a, b) => b.points - a.points || b.wins - a.wins)
+  return [...map.values()].sort((a, b) => {
+    if (b.points !== a.points) return b.points - a.points
+    if (b.wins !== a.wins) return b.wins - a.wins
+    const pa = tournament.players.find((p) => p.id === a.playerId)
+    const pb = tournament.players.find((p) => p.id === b.playerId)
+    return (pa?.seed ?? 99) - (pb?.seed ?? 99)
+  })
+}
+
+export function getPlayer(tournament: Tournament, playerId: string | null): Player | null {
+  if (!playerId) return null
+  return tournament.players.find((p) => p.id === playerId) ?? null
 }
 
 export function getPlayerName(tournament: Tournament, playerId: string | null): string {
   if (!playerId) return 'TBD'
   return tournament.players.find((p) => p.id === playerId)?.name ?? 'Ukjent'
+}
+
+export function formatPlayerLabel(tournament: Tournament, playerId: string | null): string {
+  const player = getPlayer(tournament, playerId)
+  if (!player) return 'TBD'
+  return `#${player.seed} ${player.name}`
 }
 
 export function getRounds(matches: Match[]): number[] {

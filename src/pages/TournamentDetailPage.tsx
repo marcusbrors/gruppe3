@@ -122,18 +122,21 @@ export function TournamentDetailPage() {
 
       <section className="animate-fade-up-delay-2 mt-10">
         <h2 className="mb-3 font-display text-sm font-bold uppercase tracking-wider text-forest/60">
-          Deltakere
+          Seeding
         </h2>
-        <ul className="flex flex-wrap gap-2">
-          {tournament.players.map((p) => (
-            <li
-              key={p.id}
-              className="rounded-md bg-forest/8 px-3 py-1.5 text-sm font-medium text-forest"
-            >
-              {p.name}
-            </li>
-          ))}
-        </ul>
+        <ol className="flex flex-col gap-1.5 sm:max-w-md">
+          {[...tournament.players]
+            .sort((a, b) => a.seed - b.seed)
+            .map((p) => (
+              <li
+                key={p.id}
+                className="flex items-center gap-3 rounded-md bg-forest/8 px-3 py-2 text-sm text-forest"
+              >
+                <span className="w-8 font-display font-bold text-moss">#{p.seed}</span>
+                <span className="font-medium">{p.name}</span>
+              </li>
+            ))}
+        </ol>
       </section>
     </div>
   )
