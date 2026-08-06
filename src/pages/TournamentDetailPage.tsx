@@ -2,9 +2,16 @@ import { Link, useParams } from 'react-router-dom'
 import { useTournaments } from '../context/TournamentContext'
 import { BracketView } from '../components/BracketView'
 import { MatchCard } from '../components/MatchCard'
+import { RoundsView } from '../components/RoundsView'
 import { StandingsTable } from '../components/StandingsTable'
 import { FORMAT_LABELS } from '../types/tournament'
-import { getPlayerName, progressPercent } from '../lib/tournamentLogic'
+import {
+  getLeaderId,
+  getPlayerName,
+  progressPercent,
+  usesBracket,
+  usesStandings,
+} from '../lib/tournamentLogic'
 
 export function TournamentDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -27,12 +34,8 @@ export function TournamentDetailPage() {
     updateMatchWinner(tournament.id, matchId, winnerId)
   }
 
-  const champion =
-    tournament.status === 'completed' && tournament.format === 'single_elimination'
-      ? tournament.matches
-          .filter((m) => m.round === Math.max(...tournament.matches.map((x) => x.round)))
-          .find((m) => m.winnerId)?.winnerId
-      : null
+  const leaderId = getLeaderId(tournament)
+  const showStandings = usesStandings(tournament.format)
 
   return (
     <div className="animate-fade-up">
@@ -49,6 +52,9 @@ export function TournamentDetailPage() {
           <p className="mt-1 text-forest/60">
             {tournament.players.length} deltakere ·{' '}
             {tournament.status === 'completed' ? 'Fullført' : 'Pågår'}
+            {tournament.format === 'swiss' && tournament.totalRounds
+              ? ` · ${tournament.totalRounds} swiss-runder`
+              : null}
           </p>
         </div>
         <div className="text-right">
@@ -64,35 +70,46 @@ export function TournamentDetailPage() {
         />
       </div>
 
-      {champion && (
+      {leaderId && (
         <div className="animate-fade-up-delay-1 mt-6 rounded-lg border border-amber/40 bg-amber/15 px-4 py-3">
-          <p className="text-sm text-forest/70">Vinner</p>
+          <p className="text-sm text-forest/70">
+            {tournament.format === 'cup' ? 'Vinner' : 'Ledelse / vinner'}
+          </p>
           <p className="font-display text-2xl font-extrabold text-ink">
-            {getPlayerName(tournament, champion)}
+            {getPlayerName(tournament, leaderId)}
           </p>
         </div>
       )}
 
       <p className="mt-8 mb-3 text-sm text-forest/60">
         Klikk på en spiller for å registrere kampresultat.
+        {tournament.format === 'swiss'
+          ? ' Neste swiss-runde genereres når alle kamper i runden er spilt.'
+          : null}
       </p>
 
-      {tournament.format === 'single_elimination' ? (
+      {usesBracket(tournament.format) ? (
         <BracketView tournament={tournament} onPickWinner={onPick} />
-      ) : (
+      ) : showStandings ? (
         <div className="grid gap-8 lg:grid-cols-[1fr_280px]">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {tournament.matches
-              .slice()
-              .sort((a, b) => a.index - b.index)
-              .map((match) => (
-                <MatchCard
-                  key={match.id}
-                  tournament={tournament}
-                  match={match}
-                  onPickWinner={onPick}
-                />
-              ))}
+          <div>
+            {tournament.format === 'round_robin' ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {tournament.matches
+                  .slice()
+                  .sort((a, b) => a.index - b.index)
+                  .map((match) => (
+                    <MatchCard
+                      key={match.id}
+                      tournament={tournament}
+                      match={match}
+                      onPickWinner={onPick}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <RoundsView tournament={tournament} onPickWinner={onPick} />
+            )}
           </div>
           <div>
             <h2 className="mb-3 font-display text-sm font-bold uppercase tracking-wider text-forest/60">
@@ -101,7 +118,7 @@ export function TournamentDetailPage() {
             <StandingsTable tournament={tournament} />
           </div>
         </div>
-      )}
+      ) : null}
 
       <section className="animate-fade-up-delay-2 mt-10">
         <h2 className="mb-3 font-display text-sm font-bold uppercase tracking-wider text-forest/60">

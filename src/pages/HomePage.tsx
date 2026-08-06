@@ -16,7 +16,8 @@ export function HomePage() {
           Turneringshub
         </h1>
         <p className="mt-3 max-w-xl text-base text-forest/70 sm:text-lg">
-          Opprett turneringer med cup- eller serieoppsett, og oppdater fremdriften underveis.
+          Opprett turneringer med cup, liga, alle mot alle eller swiss stage — og oppdater
+          fremdriften underveis.
         </p>
         <div className="mt-6">
           <Link

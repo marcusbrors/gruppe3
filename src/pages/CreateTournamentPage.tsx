@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTournaments } from '../context/TournamentContext'
 import type { TournamentFormat } from '../types/tournament'
-import { FORMAT_LABELS } from '../types/tournament'
+import { FORMAT_DESCRIPTIONS, FORMAT_LABELS, FORMAT_ORDER } from '../types/tournament'
 
 const SAMPLE_PLAYERS = 'Alex\nSam\nJordan\nCasey\nRiley\nMorgan\nQuinn\nAvery'
 
@@ -10,7 +10,7 @@ export function CreateTournamentPage() {
   const { addTournament } = useTournaments()
   const navigate = useNavigate()
   const [name, setName] = useState('')
-  const [format, setFormat] = useState<TournamentFormat>('single_elimination')
+  const [format, setFormat] = useState<TournamentFormat>('cup')
   const [playersText, setPlayersText] = useState(SAMPLE_PLAYERS)
   const [error, setError] = useState('')
 
@@ -31,7 +31,7 @@ export function CreateTournamentPage() {
   }
 
   return (
-    <div className="mx-auto max-w-xl animate-fade-up">
+    <div className="mx-auto max-w-2xl animate-fade-up">
       <h1 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">Ny turnering</h1>
       <p className="mt-2 text-forest/70">
         Velg oppsett, legg til deltakere — så genereres kamper automatisk.
@@ -49,27 +49,34 @@ export function CreateTournamentPage() {
         </label>
 
         <fieldset>
-          <legend className="mb-2 text-sm font-semibold text-forest">Turneringsoppsett</legend>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            {(Object.keys(FORMAT_LABELS) as TournamentFormat[]).map((key) => (
+          <legend className="mb-3 text-sm font-semibold text-forest">Turneringsoppsett</legend>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {FORMAT_ORDER.map((key) => (
               <label
                 key={key}
                 className={[
-                  'flex flex-1 cursor-pointer items-center gap-2 rounded-md border px-3 py-3 text-sm transition',
+                  'cursor-pointer rounded-md border px-3 py-3 transition',
                   format === key
                     ? 'border-moss bg-mint/50 text-forest'
                     : 'border-forest/15 bg-white/60 text-forest/70 hover:border-moss/40',
                 ].join(' ')}
               >
-                <input
-                  type="radio"
-                  name="format"
-                  value={key}
-                  checked={format === key}
-                  onChange={() => setFormat(key)}
-                  className="accent-moss"
-                />
-                {FORMAT_LABELS[key]}
+                <span className="flex items-start gap-2">
+                  <input
+                    type="radio"
+                    name="format"
+                    value={key}
+                    checked={format === key}
+                    onChange={() => setFormat(key)}
+                    className="mt-1 accent-moss"
+                  />
+                  <span>
+                    <span className="block text-sm font-semibold">{FORMAT_LABELS[key]}</span>
+                    <span className="mt-0.5 block text-xs leading-snug opacity-80">
+                      {FORMAT_DESCRIPTIONS[key]}
+                    </span>
+                  </span>
+                </span>
               </label>
             ))}
           </div>

@@ -18,31 +18,31 @@ npm run dev
 
 Åpne [http://localhost:5173](http://localhost:5173).
 
-## Demo-flyt (MVP)
+På Windows PowerShell: bruk `npm.cmd install` / `npm.cmd run dev` hvis scripts er blokkert.
+
+## Turneringsoppsett
+
+| Oppsett | Beskrivelse |
+|---------|-------------|
+| **Cup** | Utslagsturnering (single elimination) med bracket |
+| **Liga** | Dobbel serie — alle møter alle to ganger, med tabell |
+| **Alle mot alle** | Enkel serie — alle møter alle én gang |
+| **Swiss stage** | Flere runder; spillere med lik score møtes. Neste runde genereres automatisk |
+
+## Demo-flyt
 
 1. **Oversikt** — se lagrede turneringer og fremdrift
-2. **Ny turnering** — velg oppsett:
-   - Cup (single elimination)
-   - Serie (alle mot alle / round robin)
-3. **Turneringsside** — klikk på vinner i hver kamp for å oppdatere fremdrift
-   - Cup: vinnere rykkes videre i bracket
-   - Serie: tabell oppdateres med poeng
+2. **Ny turnering** — velg ett av de fire oppsettene
+3. **Turneringsside** — klikk på vinner i hver kamp
 
 ## Prosjektstruktur
 
 ```
 src/
-  components/   # Layout, MatchCard, BracketView, StandingsTable
+  components/   # Layout, MatchCard, BracketView, RoundsView, StandingsTable
   context/      # TournamentProvider (state + localStorage)
   data/         # localStorage helpers
-  lib/          # Bracket/serie-logikk
+  lib/          # Cup / liga / swiss / round-robin-logikk
   pages/        # Home, Create, Detail
   types/        # TypeScript-typer
 ```
-
-## Videre (hvis tid)
-
-- Double elimination
-- Rediger deltakere etter start
-- Score (ikke bare vinner)
-- Delbar lenke / backend

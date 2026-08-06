@@ -9,7 +9,7 @@ interface BracketViewProps {
 
 export function BracketView({ tournament, onPickWinner }: BracketViewProps) {
   const rounds = getRounds(tournament.matches)
-  const totalRounds = rounds.length
+  const totalRounds = tournament.totalRounds ?? rounds.length
 
   return (
     <div className="overflow-x-auto pb-2">
