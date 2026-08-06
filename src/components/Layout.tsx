@@ -1,26 +1,15 @@
 import { Link, Outlet } from 'react-router-dom'
-import { BrandAccentBar, BrandFooter } from './BrandDecor'
+import { BrandFooter } from './BrandDecor'
 import { DramaticToggle } from './DramaticToggle'
-import { SopraLogo } from './SopraLogo'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Layout() {
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="bg-[#0a1628] text-[#e8eef8]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
-          <SopraLogo className="h-4 w-auto text-[#e8eef8] sm:h-5" />
-          <p className="text-[10px] text-[#9db7e0] sm:text-xs">
-            Presentert for <span className="font-semibold text-[#F67200]">Kjell Games AS</span>
-          </p>
-        </div>
-        <BrandAccentBar className="rounded-none" />
-      </div>
-
       <header className="border-b border-forest/10 bg-cream/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link to="/" className="group flex min-w-0 items-center gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#0a1628] text-xs font-extrabold text-[#F67200] shadow-sm">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink text-xs font-extrabold text-cream shadow-sm">
               KG
             </span>
             <span className="min-w-0">

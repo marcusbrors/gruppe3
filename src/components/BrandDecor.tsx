@@ -1,13 +1,11 @@
-/** Dekorativ oransje/navy-stripe i Sopra-stil */
+/** Enkel dekorstripe uten ekstern branding */
 export function BrandAccentBar({ className = '' }: { className?: string }) {
   return (
     <div
-      className={`flex h-1.5 w-full overflow-hidden rounded-full ${className}`}
+      className={`h-1 w-full overflow-hidden rounded-full bg-forest/15 ${className}`}
       aria-hidden
     >
-      <span className="w-[18%] bg-[#DE1823]" />
-      <span className="w-[28%] bg-[#F67200]" />
-      <span className="flex-1 bg-[#0a1628] dark:bg-[#9db7e0]/40" />
+      <span className="block h-full w-1/3 rounded-full bg-coral" />
     </div>
   )
 }
@@ -19,9 +17,8 @@ export function BrandCornerOrnament({ className = '' }: { className?: string }) 
       aria-hidden
     >
       <div className="relative h-24 w-24">
-        <div className="absolute inset-0 rotate-12 rounded-2xl border border-coral/25" />
-        <div className="absolute inset-3 -rotate-6 rounded-xl bg-gradient-to-br from-[#F67200]/25 to-[#0a1628]/10 dark:to-[#9db7e0]/15" />
-        <div className="absolute bottom-3 right-3 h-3 w-3 rounded-sm bg-[#DE1823]" />
+        <div className="absolute inset-0 rotate-12 rounded-2xl border border-forest/15" />
+        <div className="absolute inset-3 -rotate-6 rounded-xl bg-gradient-to-br from-coral/20 to-forest/5" />
       </div>
     </div>
   )
@@ -33,9 +30,7 @@ export function BrandFooter() {
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
           <p className="font-display text-sm font-bold text-ink">Kjell Games AS</p>
-          <p className="mt-1 text-xs text-forest/55">
-            I samarbeid med Sopra Steria
-          </p>
+          <p className="mt-1 text-xs text-forest/55">Turneringshub</p>
         </div>
         <BrandAccentBar className="w-36" />
       </div>

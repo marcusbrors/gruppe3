@@ -91,7 +91,7 @@ function drawHeader(ctx: CanvasRenderingContext2D, tournament: Tournament, width
 
   ctx.fillStyle = '#F67200'
   ctx.font = '700 28px "DM Sans", sans-serif'
-  ctx.fillText('KJELL GAMES × SOPRA STERIA', 64, 80)
+  ctx.fillText('KJELL GAMES', 64, 80)
 
   ctx.fillStyle = '#e8eef8'
   ctx.font = '800 56px Syne, "DM Sans", sans-serif'
