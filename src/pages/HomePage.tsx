@@ -25,7 +25,7 @@ export function HomePage() {
         <div className="mt-6">
           <Link
             to="/ny"
-            className="inline-flex rounded-md bg-coral px-5 py-3 text-sm font-semibold text-sand transition hover:bg-amber hover:text-ink"
+            className="inline-flex rounded-md bg-coral px-5 py-3 text-sm font-semibold text-sand transition hover:bg-amber hover:text-sand"
           >
             Start ny turnering
           </Link>

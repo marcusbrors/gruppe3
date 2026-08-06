@@ -32,10 +32,10 @@ function PlayerButton({
       className={[
         'flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left text-sm font-medium transition',
         selected
-          ? 'bg-moss text-mint'
+          ? 'bg-moss text-sand'
           : disabled || isTbd
-            ? 'bg-forest/5 text-forest/40'
-            : 'bg-cream text-ink hover:bg-lime/40',
+            ? 'bg-forest/10 text-forest/50'
+            : 'bg-cream text-ink hover:bg-lime/50',
       ].join(' ')}
     >
       <span className="min-w-0">

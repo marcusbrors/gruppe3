@@ -16,18 +16,22 @@
   --color-surface: #ffffff;
 }
 
-/* Sopra Steria–inspirert dark mode: dyp navy + oransje */
+/*
+  Dark mode — UU / tilgjengelighet:
+  høyere kontrast, tydeligere flater, synlig fokusus, redusert bevegelse.
+*/
 html.dark {
-  --color-ink: #e8eef8;
-  --color-forest: #9db7e0;
-  --color-moss: #f47216;
-  --color-lime: #1e3a63;
-  --color-mint: #0d213f;
-  --color-sand: #06101f;
-  --color-cream: #0a1628;
-  --color-coral: #f47216;
-  --color-amber: #ff8a3d;
-  --color-surface: #12233f;
+  color-scheme: dark;
+  --color-ink: #f5f8fd;
+  --color-forest: #d7e2f5;
+  --color-moss: #ff9f4d;
+  --color-lime: #335880;
+  --color-mint: #243f66;
+  --color-sand: #08111f;
+  --color-cream: #0e1a2e;
+  --color-coral: #ff9440;
+  --color-amber: #ffc078;
+  --color-surface: #1c3558;
 }
 
 * {
@@ -53,11 +57,21 @@ body {
 }
 
 html.dark body {
+  /* Roligere bakgrunn — bedre lesbarhet enn sterke glows */
   background:
-    radial-gradient(ellipse 70% 45% at 8% -8%, #1a3f7a88 0%, transparent 55%),
-    radial-gradient(ellipse 55% 40% at 100% 0%, #f4721640 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 50% 100%, #0d2b5588 0%, transparent 55%),
-    linear-gradient(180deg, #06101f 0%, #0a1628 45%, #071525 100%);
+    radial-gradient(ellipse 60% 40% at 0% 0%, #1a3f7a55 0%, transparent 50%),
+    radial-gradient(ellipse 50% 35% at 100% 0%, #f4721628 0%, transparent 45%),
+    linear-gradient(180deg, #07111f 0%, #0e1a2e 100%);
+}
+
+/* Synlig tastaturfokus (UU) */
+:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 3px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 @keyframes fade-up {
@@ -97,10 +111,54 @@ html.dark body {
   animation: pulse-soft 2.4s ease-in-out infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  .animate-fade-up,
+  .animate-fade-up-delay-1,
+  .animate-fade-up-delay-2,
+  .animate-pulse-soft {
+    animation: none !important;
+  }
+
+  body {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Sopra branding flourishes */
 .brand-grid {
   background-image:
-    linear-gradient(to right, color-mix(in oklab, var(--color-forest) 8%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklab, var(--color-forest) 8%, transparent) 1px, transparent 1px);
+    linear-gradient(to right, color-mix(in oklab, var(--color-forest) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-forest) 12%, transparent) 1px, transparent 1px);
   background-size: 28px 28px;
+}
+
+/* Tydeligere kort/kanter i dark mode */
+html.dark .border-forest\/10 {
+  border-color: color-mix(in oklab, var(--color-forest) 35%, transparent);
+}
+
+html.dark .border-forest\/15 {
+  border-color: color-mix(in oklab, var(--color-forest) 45%, transparent);
+}
+
+html.dark .text-forest\/40,
+html.dark .text-forest\/45,
+html.dark .text-forest\/50 {
+  color: color-mix(in oklab, var(--color-forest) 78%, transparent);
+}
+
+html.dark .text-forest\/55,
+html.dark .text-forest\/60,
+html.dark .text-forest\/70 {
+  color: color-mix(in oklab, var(--color-forest) 88%, transparent);
 }

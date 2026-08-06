@@ -41,7 +41,7 @@ export function Layout() {
             </Link>
             <Link
               to="/ny"
-              className="rounded-md bg-coral px-3 py-2 text-sm font-semibold text-sand transition hover:bg-amber hover:text-ink"
+              className="rounded-md bg-coral px-3 py-2 text-sm font-semibold text-sand transition hover:bg-amber hover:text-sand"
             >
               Ny turnering
             </Link>

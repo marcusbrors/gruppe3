@@ -97,7 +97,7 @@ export function CreateTournamentPage() {
 
         <button
           type="submit"
-          className="rounded-md bg-forest px-5 py-3 text-sm font-semibold text-mint transition hover:bg-moss"
+          className="rounded-md bg-coral px-5 py-3 text-sm font-semibold text-sand transition hover:bg-amber hover:text-sand"
         >
           Opprett og start
         </button>

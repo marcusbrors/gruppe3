@@ -8,11 +8,12 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggleTheme}
-      className="rounded-md border border-forest/15 bg-surface/80 px-2.5 py-2 text-xs font-semibold text-forest transition hover:border-coral/50 hover:text-coral"
+      aria-pressed={isDark}
       aria-label={isDark ? 'Bytt til lys modus' : 'Bytt til mørk modus'}
-      title={isDark ? 'Lys modus' : 'Dark mode (Sopra Steria)'}
+      title={isDark ? 'Lys modus' : 'Mørk modus'}
+      className="rounded-md border-2 border-forest/30 bg-surface px-3 py-2 text-xs font-semibold text-ink transition hover:border-coral hover:text-coral"
     >
-      {isDark ? 'Lys' : 'Mørk'}
+      {isDark ? 'Lys modus' : 'Mørk modus'}
     </button>
   )
 }
