@@ -48,13 +48,23 @@ export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
 
   return createPortal(
     <div
-      className="pointer-events-none fixed inset-0 z-[10000] flex items-center justify-center bg-sand/40 backdrop-blur-[2px]"
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-sand/40 backdrop-blur-[2px]"
       role="status"
       aria-live="polite"
     >
       <div className="relative mx-4 flex w-full max-w-md flex-col gap-4">
+        <button
+          type="button"
+          onClick={onDone}
+          aria-label="Lukk animasjon"
+          title="Lukk"
+          className="absolute -right-1 -top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border-2 border-forest/20 bg-cream text-lg font-bold leading-none text-ink shadow-md transition hover:border-coral hover:text-coral sm:-right-2 sm:-top-4"
+        >
+          ×
+        </button>
+
         {/* Winner card */}
-        <div className="fx-winner relative overflow-hidden rounded-2xl border-2 border-amber bg-cream px-5 py-6 text-center shadow-2xl">
+        <div className="fx-winner pointer-events-none relative overflow-hidden rounded-2xl border-2 border-amber bg-cream px-5 py-6 text-center shadow-2xl">
           {confetti.map((p) => (
             <span
               key={p.id}
