@@ -12,7 +12,7 @@ export function HomePage() {
     <div>
       <section className="animate-fade-up relative mb-10 overflow-hidden rounded-2xl border border-forest/10 bg-surface/50 px-5 py-8 sm:px-8 sm:py-10">
         <BrandCornerOrnament className="-right-4 -top-4 opacity-80" />
-        <p className="mb-2 font-display text-sm font-bold uppercase tracking-[0.2em] text-forest/60">
+        <p className="mb-2 font-display text-sm font-bold uppercase tracking-[0.2em] text-coral">
           Kjell Games AS
         </p>
         <h1 className="max-w-xl font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">

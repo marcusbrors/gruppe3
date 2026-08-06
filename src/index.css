@@ -4,17 +4,17 @@
   --font-display: "Syne", sans-serif;
   --font-body: "DM Sans", sans-serif;
 
-  /* Lys modus — nøytral, myk, én dempet aksent */
-  --color-ink: #1c1c1c;
-  --color-forest: #5a5a5a;
-  --color-moss: #3f3f3f;
-  --color-lime: #e6e5e2;
-  --color-mint: #ebeae7;
-  --color-sand: #f1f0ed;
-  --color-cream: #f6f5f2;
-  --color-coral: #8a6a4b;
-  --color-amber: #6e6e6e;
-  --color-surface: #faf9f7;
+  /* Lys modus — soft blush, charcoal, hot rose-aksent */
+  --color-ink: #16141c;
+  --color-forest: #5c5668;
+  --color-moss: #241f2b;
+  --color-lime: #f3e6ee;
+  --color-mint: #f7eef4;
+  --color-sand: #faf4f7;
+  --color-cream: #fffbfd;
+  --color-coral: #e8366f;
+  --color-amber: #ff6b9d;
+  --color-surface: #ffffff;
 }
 
 /*
@@ -50,8 +50,10 @@ body {
   font-family: var(--font-body);
   color: var(--color-ink);
   background:
-    radial-gradient(ellipse 70% 45% at 50% -10%, #ffffff88 0%, transparent 55%),
-    linear-gradient(180deg, #f3f2ef 0%, #f7f6f3 55%, #f1f0ed 100%);
+    radial-gradient(ellipse 65% 50% at 10% -5%, #ff6b9d33 0%, transparent 55%),
+    radial-gradient(ellipse 55% 40% at 100% 0%, #e8366f22 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 70% 100%, #c4b5fd22 0%, transparent 50%),
+    linear-gradient(165deg, #fffbfd 0%, #faf4f7 45%, #f3eaf1 100%);
   background-attachment: fixed;
   transition: background 0.25s ease, color 0.2s ease;
 }

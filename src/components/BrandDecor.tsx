@@ -19,8 +19,8 @@ export function BrandCornerOrnament({ className = '' }: { className?: string }) 
       aria-hidden
     >
       <div className="relative h-24 w-24">
-        <div className="absolute inset-0 rotate-12 rounded-2xl border border-forest/10" />
-        <div className="absolute inset-3 -rotate-6 rounded-xl bg-gradient-to-br from-forest/5 to-transparent" />
+        <div className="absolute inset-0 rotate-12 rounded-2xl border border-coral/25" />
+        <div className="absolute inset-3 -rotate-6 rounded-xl bg-gradient-to-br from-coral/20 via-amber/10 to-transparent" />
       </div>
     </div>
   )
