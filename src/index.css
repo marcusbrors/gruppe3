@@ -235,6 +235,121 @@ html.dramatic textarea::placeholder {
   text-transform: uppercase !important;
 }
 
+/* Dramatisk overgang ved toggle */
+html.dramatic-transitioning body {
+  animation: dramatic-shake 0.55s ease-in-out;
+}
+
+html.dramatic-transitioning * {
+  transition:
+    letter-spacing 0.55s ease,
+    text-transform 0.01s linear,
+    transform 0.55s ease !important;
+}
+
+html.dramatic.dramatic-transitioning body {
+  letter-spacing: 0.06em;
+}
+
+@keyframes dramatic-shake {
+  0% {
+    transform: scale(1);
+    filter: contrast(1);
+  }
+  30% {
+    transform: scale(1.015);
+    filter: contrast(1.15) saturate(1.2);
+  }
+  60% {
+    transform: scale(0.995);
+    filter: contrast(1.05);
+  }
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+@keyframes dramatic-flash-in {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes dramatic-flash-text {
+  0% {
+    transform: scale(0.6) rotate(-4deg);
+    letter-spacing: 0;
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1.15) rotate(2deg);
+    letter-spacing: 0.2em;
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1) rotate(0deg);
+    letter-spacing: 0.28em;
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    letter-spacing: 0.4em;
+    opacity: 0;
+  }
+}
+
+.dramatic-flash {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: dramatic-flash-in 0.9s ease-out forwards;
+}
+
+.dramatic-flash-on {
+  background: radial-gradient(circle at center, #ff9440cc 0%, #0a1628ee 70%);
+}
+
+.dramatic-flash-off {
+  background: radial-gradient(circle at center, #e8eef8cc 0%, #0e1a2ecc 70%);
+}
+
+.dramatic-flash-text {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 6vw, 3.5rem);
+  font-weight: 800;
+  color: #fffdf8;
+  text-align: center;
+  text-transform: uppercase;
+  animation: dramatic-flash-text 0.9s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.dramatic-transitioning body,
+  .dramatic-flash,
+  .dramatic-flash-text {
+    animation: none !important;
+  }
+
+  .dramatic-flash {
+    display: none;
+  }
+}
+
 /* Sopra branding flourishes */
 .brand-grid {
   background-image:

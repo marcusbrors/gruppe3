@@ -28,13 +28,16 @@ export function DramaticProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, dramatic ? '1' : '0')
   }, [dramatic])
 
+  const toggleDramatic = () => {
+    document.documentElement.classList.add('dramatic-transitioning')
+    window.setTimeout(() => {
+      document.documentElement.classList.remove('dramatic-transitioning')
+    }, 900)
+    setDramatic((v) => !v)
+  }
+
   return (
-    <DramaticContext.Provider
-      value={{
-        dramatic,
-        toggleDramatic: () => setDramatic((v) => !v),
-      }}
-    >
+    <DramaticContext.Provider value={{ dramatic, toggleDramatic }}>
       {children}
     </DramaticContext.Provider>
   )

@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { DramaticTransition } from './components/DramaticTransition'
 import { DramaticProvider } from './context/DramaticContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { TournamentProvider } from './context/TournamentContext'
@@ -12,6 +13,7 @@ export default function App() {
     <ThemeProvider>
       <DramaticProvider>
         <TournamentProvider>
+          <DramaticTransition />
           <BrowserRouter>
             <Routes>
               <Route element={<Layout />}>
