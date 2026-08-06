@@ -134,6 +134,21 @@ html.dark body {
   }
 }
 
+/* Dramatic mode — ALT BLIR STORE BOKSTAVER */
+html.dramatic,
+html.dramatic body,
+html.dramatic button,
+html.dramatic input,
+html.dramatic textarea,
+html.dramatic select {
+  text-transform: uppercase !important;
+}
+
+html.dramatic input::placeholder,
+html.dramatic textarea::placeholder {
+  text-transform: uppercase !important;
+}
+
 /* Sopra branding flourishes */
 .brand-grid {
   background-image:

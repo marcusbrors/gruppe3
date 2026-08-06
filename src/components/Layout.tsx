@@ -1,5 +1,6 @@
 import { Link, Outlet } from 'react-router-dom'
 import { BrandAccentBar, BrandFooter } from './BrandDecor'
+import { DramaticToggle } from './DramaticToggle'
 import { SopraLogo } from './SopraLogo'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -31,7 +32,8 @@ export function Layout() {
               </span>
             </span>
           </Link>
-          <nav className="flex items-center gap-2 sm:gap-3">
+          <nav className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
+            <DramaticToggle />
             <ThemeToggle />
             <Link
               to="/"
