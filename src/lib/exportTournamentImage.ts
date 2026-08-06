@@ -71,11 +71,8 @@ function estimateHeight(tournament: Tournament, options: ExportImageOptions): nu
   }
   if (showBracket) {
     const rounds = getRounds(tournament.matches)
-    const maxInRound = Math.max(
-      1,
-      ...rounds.map((r) => tournament.matches.filter((m) => m.round === r).length),
-    )
-    h += 50 + maxInRound * 78 + 40
+    const firstCount = tournament.matches.filter((m) => m.round === rounds[0]).length || 1
+    h += 50 + firstCount * 78 + 40
   }
   h += 80 // footer
   return Math.max(900, Math.min(h, 3200))
@@ -220,13 +217,9 @@ function drawBracket(
     240,
     (width - 128 - colGap * Math.max(0, rounds.length - 1)) / Math.max(1, rounds.length),
   )
-  const rowH = 74
-
-  const maxMatches = Math.max(
-    1,
-    ...rounds.map((r) => tournament.matches.filter((m) => m.round === r && !m.isBye).length ||
-      tournament.matches.filter((m) => m.round === r).length),
-  )
+  const slot = 78
+  const firstCount = tournament.matches.filter((m) => m.round === rounds[0]).length || 1
+  const bracketH = firstCount * slot
 
   for (let ri = 0; ri < rounds.length; ri++) {
     const round = rounds[ri]
@@ -234,17 +227,20 @@ function drawBracket(
       .filter((m) => m.round === round)
       .sort((a, b) => a.index - b.index)
     const x = 64 + ri * (colW + colGap)
+    const spacing = slot * 2 ** ri
+    const offset = (spacing - slot) / 2
 
     ctx.fillStyle = '#9db7e0'
     ctx.font = '700 16px "DM Sans", sans-serif'
     ctx.fillText(roundLabel(tournament.format, round, totalRounds), x, y)
 
     matches.forEach((m, mi) => {
-      drawMatchBox(ctx, tournament, m, x, y + 16 + mi * rowH, colW)
+      const top = y + 16 + offset + mi * spacing
+      drawMatchBox(ctx, tournament, m, x, top, colW)
     })
   }
 
-  return y + 16 + maxMatches * rowH + 24
+  return y + 16 + bracketH + 24
 }
 
 /** Tegner en turneringsplakat og returnerer PNG data-URL. */
