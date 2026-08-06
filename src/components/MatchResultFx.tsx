@@ -38,7 +38,7 @@ export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
 
   useEffect(() => {
     if (!payload) return
-    const t = window.setTimeout(onDone, 1600)
+    const t = window.setTimeout(onDone, 5500)
     return () => window.clearTimeout(t)
   }, [payload, onDone])
 
