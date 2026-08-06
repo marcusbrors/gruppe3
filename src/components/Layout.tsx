@@ -9,7 +9,7 @@ export function Layout() {
       <header className="border-b border-forest/10 bg-cream/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Link to="/" className="group flex min-w-0 items-center gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink text-xs font-extrabold text-cream shadow-sm">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink text-xs font-extrabold text-cream">
               KG
             </span>
             <span className="min-w-0">
