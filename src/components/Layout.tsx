@@ -8,12 +8,7 @@ export function Layout() {
     <div className="flex min-h-screen flex-col">
       <div className="bg-[#0a1628] text-[#e8eef8]">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
-          <div className="flex items-center gap-3">
-            <SopraLogo className="h-4 w-auto text-[#e8eef8] sm:h-5" />
-            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F67200] sm:inline">
-              Digital Engineering
-            </span>
-          </div>
+          <SopraLogo className="h-4 w-auto text-[#e8eef8] sm:h-5" />
           <p className="text-[10px] text-[#9db7e0] sm:text-xs">
             Presentert for <span className="font-semibold text-[#F67200]">Kjell Games AS</span>
           </p>
@@ -32,7 +27,7 @@ export function Layout() {
                 Kjell Games
               </span>
               <span className="block truncate text-[10px] text-forest/50 sm:text-xs">
-                Turneringer · powered by Sopra Steria
+                Turneringer
               </span>
             </span>
           </Link>

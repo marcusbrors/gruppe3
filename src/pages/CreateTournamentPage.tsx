@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { BrandAccentBar, BrandPartnerBadge } from '../components/BrandDecor'
+import { BrandAccentBar } from '../components/BrandDecor'
 import { SeedEditor, sampleEntrants, type DraftEntrant } from '../components/SeedEditor'
 import { useTournaments } from '../context/TournamentContext'
 import type { TournamentFormat } from '../types/tournament'
@@ -29,7 +29,6 @@ export function CreateTournamentPage() {
 
   return (
     <div className="mx-auto max-w-2xl animate-fade-up">
-      <BrandPartnerBadge className="mb-4" />
       <h1 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">Ny turnering</h1>
       <BrandAccentBar className="mt-3 max-w-[10rem]" />
       <p className="mt-3 text-forest/70">
