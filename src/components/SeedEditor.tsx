@@ -108,7 +108,7 @@ export function SeedEditor({ entrants, onChange }: SeedEditorProps) {
           <button
             type="button"
             onClick={applyBulk}
-            className="mt-2 rounded-md bg-forest/90 px-3 py-1.5 text-xs font-semibold text-mint"
+            className="mt-2 rounded-md bg-coral px-3 py-1.5 text-xs font-semibold text-sand"
           >
             Bruk liste (erstatter)
           </button>
