@@ -1,5 +1,6 @@
 import type { Match, Tournament } from '../types/tournament'
 import { formatPlayerLabel } from '../lib/tournamentLogic'
+import { PlayerHoverName } from './PlayerHoverName'
 
 interface MatchCardProps {
   tournament: Tournament
@@ -8,39 +9,52 @@ interface MatchCardProps {
 }
 
 function PlayerButton({
-  name,
+  tournament,
+  playerId,
   selected,
   disabled,
   onClick,
 }: {
-  name: string
+  tournament: Tournament
+  playerId: string | null
   selected: boolean
   disabled: boolean
   onClick: () => void
 }) {
+  const label = formatPlayerLabel(tournament, playerId)
+  const isTbd = !playerId
+
   return (
     <button
       type="button"
-      disabled={disabled || name === 'TBD'}
+      disabled={disabled || isTbd}
       onClick={onClick}
       className={[
         'flex w-full items-center justify-between rounded-md px-3 py-2.5 text-left text-sm font-medium transition',
         selected
           ? 'bg-moss text-mint'
-          : disabled || name === 'TBD'
+          : disabled || isTbd
             ? 'bg-forest/5 text-forest/40'
             : 'bg-cream text-ink hover:bg-lime/40',
       ].join(' ')}
     >
-      <span>{name}</span>
-      {selected && <span className="text-xs uppercase tracking-wide opacity-80">Vinner</span>}
+      <span className="min-w-0">
+        {isTbd ? (
+          label
+        ) : (
+          <PlayerHoverName
+            tournament={tournament}
+            playerId={playerId}
+            className={selected ? '[&_span]:decoration-mint/50' : undefined}
+          />
+        )}
+      </span>
+      {selected && <span className="shrink-0 text-xs uppercase tracking-wide opacity-80">Vinner</span>}
     </button>
   )
 }
 
 export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
-  const p1 = formatPlayerLabel(tournament, match.player1Id)
-  const p2 = formatPlayerLabel(tournament, match.player2Id)
   const canPick = match.status === 'ready' || match.status === 'completed'
   const bothReady = Boolean(match.player1Id && match.player2Id)
 
@@ -48,7 +62,9 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
     return (
       <div className="rounded-lg border border-dashed border-forest/15 bg-surface/40 p-3">
         <div className="mb-1 text-xs text-forest/50">Bye</div>
-        <p className="text-sm font-medium text-forest">{p1} går videre</p>
+        <p className="text-sm font-medium text-forest">
+          <PlayerHoverName tournament={tournament} playerId={match.player1Id} /> går videre
+        </p>
       </div>
     )
   }
@@ -67,13 +83,15 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
       </div>
       <div className="flex flex-col gap-1.5">
         <PlayerButton
-          name={p1}
+          tournament={tournament}
+          playerId={match.player1Id}
           selected={match.winnerId === match.player1Id}
           disabled={!canPick || !bothReady}
           onClick={() => match.player1Id && onPickWinner(match.id, match.player1Id)}
         />
         <PlayerButton
-          name={p2}
+          tournament={tournament}
+          playerId={match.player2Id}
           selected={match.winnerId === match.player2Id}
           disabled={!canPick || !bothReady}
           onClick={() => match.player2Id && onPickWinner(match.id, match.player2Id)}

@@ -1,5 +1,6 @@
 import type { Tournament } from '../types/tournament'
-import { formatPlayerLabel, getStandings } from '../lib/tournamentLogic'
+import { getStandings } from '../lib/tournamentLogic'
+import { PlayerHoverName } from './PlayerHoverName'
 
 export function StandingsTable({ tournament }: { tournament: Tournament }) {
   const standings = getStandings(tournament)
@@ -22,7 +23,7 @@ export function StandingsTable({ tournament }: { tournament: Tournament }) {
             <tr key={row.playerId} className="border-b border-forest/5 last:border-0">
               <td className="px-4 py-3 text-forest/50">{i + 1}</td>
               <td className="px-4 py-3 font-medium">
-                {formatPlayerLabel(tournament, row.playerId)}
+                <PlayerHoverName tournament={tournament} playerId={row.playerId} />
               </td>
               <td className="px-4 py-3">{row.played}</td>
               <td className="px-4 py-3">{row.wins}</td>

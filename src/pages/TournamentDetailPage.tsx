@@ -1,13 +1,14 @@
 import { Link, useParams } from 'react-router-dom'
-import { useTournaments } from '../context/TournamentContext'
+import { BrandAccentBar, BrandPartnerBadge } from '../components/BrandDecor'
 import { BracketView } from '../components/BracketView'
 import { MatchCard } from '../components/MatchCard'
+import { PlayerHoverName } from '../components/PlayerHoverName'
 import { RoundsView } from '../components/RoundsView'
 import { StandingsTable } from '../components/StandingsTable'
+import { useTournaments } from '../context/TournamentContext'
 import { FORMAT_LABELS } from '../types/tournament'
 import {
   getLeaderId,
-  getPlayerName,
   progressPercent,
   usesBracket,
   usesStandings,
@@ -39,35 +40,41 @@ export function TournamentDetailPage() {
 
   return (
     <div className="animate-fade-up">
-      <Link to="/" className="text-sm text-forest/50 transition hover:text-forest">
-        ← Oversikt
-      </Link>
-
-      <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-sm font-medium text-coral">{FORMAT_LABELS[tournament.format]}</p>
-          <h1 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">
-            {tournament.name}
-          </h1>
-          <p className="mt-1 text-forest/60">
-            {tournament.players.length} deltakere ·{' '}
-            {tournament.status === 'completed' ? 'Fullført' : 'Pågår'}
-            {tournament.format === 'swiss' && tournament.totalRounds
-              ? ` · ${tournament.totalRounds} swiss-runder`
-              : null}
-          </p>
-        </div>
-        <div className="text-right">
-          <p className="font-display text-3xl font-extrabold text-moss">{pct}%</p>
-          <p className="text-xs text-forest/50">fremdrift</p>
-        </div>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <Link to="/" className="text-sm text-forest/50 transition hover:text-forest">
+          ← Oversikt
+        </Link>
+        <BrandPartnerBadge />
       </div>
 
-      <div className="mt-4 h-2 overflow-hidden rounded-full bg-mint">
-        <div
-          className="h-full rounded-full bg-moss transition-all duration-500"
-          style={{ width: `${pct}%` }}
-        />
+      <div className="rounded-2xl border border-forest/10 bg-surface/40 p-5 sm:p-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-coral">{FORMAT_LABELS[tournament.format]}</p>
+            <h1 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">
+              {tournament.name}
+            </h1>
+            <BrandAccentBar className="mt-3 max-w-[10rem]" />
+            <p className="mt-3 text-forest/60">
+              {tournament.players.length} deltakere ·{' '}
+              {tournament.status === 'completed' ? 'Fullført' : 'Pågår'}
+              {tournament.format === 'swiss' && tournament.totalRounds
+                ? ` · ${tournament.totalRounds} swiss-runder`
+                : null}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="font-display text-3xl font-extrabold text-moss">{pct}%</p>
+            <p className="text-xs text-forest/50">fremdrift</p>
+          </div>
+        </div>
+
+        <div className="mt-4 h-2 overflow-hidden rounded-full bg-mint">
+          <div
+            className="h-full rounded-full bg-moss transition-all duration-500"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
       </div>
 
       {leaderId && (
@@ -76,13 +83,17 @@ export function TournamentDetailPage() {
             {tournament.format === 'cup' ? 'Vinner' : 'Ledelse / vinner'}
           </p>
           <p className="font-display text-2xl font-extrabold text-ink">
-            {getPlayerName(tournament, leaderId)}
+            <PlayerHoverName
+              tournament={tournament}
+              playerId={leaderId}
+              showSeed={false}
+            />
           </p>
         </div>
       )}
 
       <p className="mt-8 mb-3 text-sm text-forest/60">
-        Klikk på en spiller for å registrere kampresultat.
+        Klikk på en spiller for å registrere kampresultat. Hold over navn for win% og form.
         {tournament.format === 'swiss'
           ? ' Neste swiss-runde genereres når alle kamper i runden er spilt.'
           : null}
@@ -133,7 +144,12 @@ export function TournamentDetailPage() {
                 className="flex items-center gap-3 rounded-md bg-forest/8 px-3 py-2 text-sm text-forest"
               >
                 <span className="w-8 font-display font-bold text-moss">#{p.seed}</span>
-                <span className="font-medium">{p.name}</span>
+                <PlayerHoverName
+                  tournament={tournament}
+                  playerId={p.id}
+                  showSeed={false}
+                  className="font-medium"
+                />
               </li>
             ))}
         </ol>

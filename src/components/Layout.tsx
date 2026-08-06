@@ -1,16 +1,40 @@
 import { Link, Outlet } from 'react-router-dom'
+import { BrandAccentBar, BrandFooter } from './BrandDecor'
+import { SopraLogo } from './SopraLogo'
 import { ThemeToggle } from './ThemeToggle'
 
 export function Layout() {
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
+      <div className="bg-[#0a1628] text-[#e8eef8]">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
+          <div className="flex items-center gap-3">
+            <SopraLogo className="h-4 w-auto text-[#e8eef8] sm:h-5" />
+            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F67200] sm:inline">
+              Digital Engineering
+            </span>
+          </div>
+          <p className="text-[10px] text-[#9db7e0] sm:text-xs">
+            Presentert for <span className="font-semibold text-[#F67200]">Kjell Games AS</span>
+          </p>
+        </div>
+        <BrandAccentBar className="rounded-none" />
+      </div>
+
       <header className="border-b border-forest/10 bg-cream/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <Link to="/" className="group flex items-baseline gap-2">
-            <span className="font-display text-xl font-extrabold tracking-tight text-forest sm:text-2xl">
-              Kjell Games
+          <Link to="/" className="group flex min-w-0 items-center gap-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#0a1628] text-xs font-extrabold text-[#F67200] shadow-sm">
+              KG
             </span>
-            <span className="hidden text-sm text-forest/50 sm:inline">Turneringer</span>
+            <span className="min-w-0">
+              <span className="block font-display text-lg font-extrabold tracking-tight text-forest sm:text-2xl">
+                Kjell Games
+              </span>
+              <span className="block truncate text-[10px] text-forest/50 sm:text-xs">
+                Turneringer · powered by Sopra Steria
+              </span>
+            </span>
           </Link>
           <nav className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
@@ -29,9 +53,12 @@ export function Layout() {
           </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+
+      <main className="relative mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
         <Outlet />
       </main>
+
+      <BrandFooter />
     </div>
   )
 }
