@@ -5,7 +5,7 @@ export function StandingsTable({ tournament }: { tournament: Tournament }) {
   const standings = getStandings(tournament)
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-forest/10 bg-white/60">
+    <div className="overflow-x-auto rounded-lg border border-forest/10 bg-surface/60">
       <table className="w-full text-left text-sm">
         <thead className="border-b border-forest/10 text-xs uppercase tracking-wide text-forest/50">
           <tr>

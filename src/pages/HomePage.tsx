@@ -22,7 +22,7 @@ export function HomePage() {
         <div className="mt-6">
           <Link
             to="/ny"
-            className="inline-flex rounded-md bg-coral px-5 py-3 text-sm font-semibold text-cream transition hover:bg-amber hover:text-ink"
+            className="inline-flex rounded-md bg-coral px-5 py-3 text-sm font-semibold text-sand transition hover:bg-amber hover:text-ink"
           >
             Start ny turnering
           </Link>
@@ -33,7 +33,7 @@ export function HomePage() {
         <h2 className="mb-4 font-display text-lg font-bold text-forest">Dine turneringer</h2>
 
         {tournaments.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-forest/20 bg-white/40 px-6 py-12 text-center">
+          <div className="rounded-lg border border-dashed border-forest/20 bg-surface/40 px-6 py-12 text-center">
             <p className="text-forest/60">Ingen turneringer ennå. Lag den første for demoen!</p>
             <Link to="/ny" className="mt-4 inline-block text-sm font-semibold text-moss underline">
               Opprett turnering
@@ -47,7 +47,7 @@ export function HomePage() {
                 <li key={t.id}>
                   <Link
                     to={`/turnering/${t.id}`}
-                    className="block rounded-lg border border-forest/10 bg-white/70 p-4 transition hover:border-moss/40 hover:bg-white"
+                    className="block rounded-lg border border-forest/10 bg-surface/70 p-4 transition hover:border-moss/40 hover:bg-surface"
                   >
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>

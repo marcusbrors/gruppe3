@@ -40,7 +40,7 @@ export function CreateTournamentPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="f.eks. Fredags-cup"
-            className="rounded-md border border-forest/15 bg-white/80 px-3 py-2.5 outline-none ring-moss/30 focus:ring-2"
+            className="rounded-md border border-forest/15 bg-surface/80 px-3 py-2.5 outline-none ring-moss/30 focus:ring-2"
           />
         </label>
 
@@ -54,7 +54,7 @@ export function CreateTournamentPage() {
                   'cursor-pointer rounded-md border px-3 py-3 transition',
                   format === key
                     ? 'border-moss bg-mint/50 text-forest'
-                    : 'border-forest/15 bg-white/60 text-forest/70 hover:border-moss/40',
+                    : 'border-forest/15 bg-surface/60 text-forest/70 hover:border-moss/40',
                 ].join(' ')}
               >
                 <span className="flex items-start gap-2">

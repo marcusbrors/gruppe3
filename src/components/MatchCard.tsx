@@ -46,7 +46,7 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
 
   if (match.isBye) {
     return (
-      <div className="rounded-lg border border-dashed border-forest/15 bg-white/40 p-3">
+      <div className="rounded-lg border border-dashed border-forest/15 bg-surface/40 p-3">
         <div className="mb-1 text-xs text-forest/50">Bye</div>
         <p className="text-sm font-medium text-forest">{p1} går videre</p>
       </div>
@@ -54,7 +54,7 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
   }
 
   return (
-    <div className="rounded-lg border border-forest/10 bg-white/60 p-3 shadow-sm backdrop-blur-sm">
+    <div className="rounded-lg border border-forest/10 bg-surface/60 p-3 shadow-sm backdrop-blur-sm">
       <div className="mb-2 flex items-center justify-between text-xs text-forest/50">
         <span>Kamp #{match.index + 1}</span>
         <span>

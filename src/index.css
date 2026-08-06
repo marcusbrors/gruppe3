@@ -13,6 +13,21 @@
   --color-cream: #fffdf8;
   --color-coral: #e76f51;
   --color-amber: #f4a261;
+  --color-surface: #ffffff;
+}
+
+/* Sopra Steria–inspirert dark mode: dyp navy + oransje */
+html.dark {
+  --color-ink: #e8eef8;
+  --color-forest: #9db7e0;
+  --color-moss: #f47216;
+  --color-lime: #1e3a63;
+  --color-mint: #0d213f;
+  --color-sand: #06101f;
+  --color-cream: #0a1628;
+  --color-coral: #f47216;
+  --color-amber: #ff8a3d;
+  --color-surface: #12233f;
 }
 
 * {
@@ -34,6 +49,15 @@ body {
     radial-gradient(ellipse 60% 40% at 100% 0%, #f4a26133 0%, transparent 50%),
     linear-gradient(180deg, var(--color-sand) 0%, var(--color-cream) 100%);
   background-attachment: fixed;
+  transition: background 0.25s ease, color 0.2s ease;
+}
+
+html.dark body {
+  background:
+    radial-gradient(ellipse 70% 45% at 8% -8%, #1a3f7a88 0%, transparent 55%),
+    radial-gradient(ellipse 55% 40% at 100% 0%, #f4721640 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 50% 100%, #0d2b5588 0%, transparent 55%),
+    linear-gradient(180deg, #06101f 0%, #0a1628 45%, #071525 100%);
 }
 
 @keyframes fade-up {
