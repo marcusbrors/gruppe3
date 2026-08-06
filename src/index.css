@@ -134,6 +134,75 @@ html.dark body {
   }
 }
 
+/* Match result FX */
+@keyframes fx-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(12px);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.03) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fx-confetti {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.4)
+      rotate(var(--rot));
+  }
+}
+
+@keyframes fx-boom {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--dx) * 0.4), calc(-50% + var(--dy) * 0.4))
+      scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2);
+  }
+}
+
+.fx-winner {
+  animation: fx-pop 0.45s ease-out both;
+}
+
+.fx-loser {
+  animation: fx-pop 0.45s ease-out 0.12s both;
+}
+
+.fx-confetti {
+  animation: fx-confetti 0.9s ease-out forwards;
+}
+
+.fx-boom {
+  animation: fx-boom 0.75s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-winner,
+  .fx-loser,
+  .fx-confetti,
+  .fx-boom {
+    animation: none !important;
+  }
+}
+
 /* Dramatic mode — ALT BLIR STORE BOKSTAVER */
 html.dramatic,
 html.dramatic body,

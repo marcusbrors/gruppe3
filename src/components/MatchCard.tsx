@@ -1,5 +1,7 @@
+import { useCallback, useState } from 'react'
 import type { Match, Tournament } from '../types/tournament'
-import { formatPlayerLabel } from '../lib/tournamentLogic'
+import { formatPlayerLabel, getPlayerName } from '../lib/tournamentLogic'
+import { MatchResultFx, type MatchFxPayload } from './MatchResultFx'
 import { PlayerHoverName } from './PlayerHoverName'
 
 interface MatchCardProps {
@@ -55,8 +57,25 @@ function PlayerButton({
 }
 
 export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
+  const [fx, setFx] = useState<MatchFxPayload | null>(null)
   const canPick = match.status === 'ready' || match.status === 'completed'
   const bothReady = Boolean(match.player1Id && match.player2Id)
+
+  const clearFx = useCallback(() => setFx(null), [])
+
+  const pick = (winnerId: string) => {
+    if (!match.player1Id || !match.player2Id) return
+    if (match.winnerId === winnerId) {
+      onPickWinner(match.id, winnerId)
+      return
+    }
+    const loserId = winnerId === match.player1Id ? match.player2Id : match.player1Id
+    setFx({
+      winnerName: getPlayerName(tournament, winnerId),
+      loserName: getPlayerName(tournament, loserId),
+    })
+    onPickWinner(match.id, winnerId)
+  }
 
   if (match.isBye) {
     return (
@@ -70,33 +89,36 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
   }
 
   return (
-    <div className="rounded-lg border border-forest/10 bg-surface/60 p-3 shadow-sm backdrop-blur-sm">
-      <div className="mb-2 flex items-center justify-between text-xs text-forest/50">
-        <span>Kamp #{match.index + 1}</span>
-        <span>
-          {match.status === 'completed'
-            ? 'Ferdig'
-            : match.status === 'ready'
-              ? 'Klar'
-              : 'Venter'}
-        </span>
+    <>
+      <div className="rounded-lg border border-forest/10 bg-surface/60 p-3 shadow-sm backdrop-blur-sm">
+        <div className="mb-2 flex items-center justify-between text-xs text-forest/50">
+          <span>Kamp #{match.index + 1}</span>
+          <span>
+            {match.status === 'completed'
+              ? 'Ferdig'
+              : match.status === 'ready'
+                ? 'Klar'
+                : 'Venter'}
+          </span>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <PlayerButton
+            tournament={tournament}
+            playerId={match.player1Id}
+            selected={match.winnerId === match.player1Id}
+            disabled={!canPick || !bothReady}
+            onClick={() => match.player1Id && pick(match.player1Id)}
+          />
+          <PlayerButton
+            tournament={tournament}
+            playerId={match.player2Id}
+            selected={match.winnerId === match.player2Id}
+            disabled={!canPick || !bothReady}
+            onClick={() => match.player2Id && pick(match.player2Id)}
+          />
+        </div>
       </div>
-      <div className="flex flex-col gap-1.5">
-        <PlayerButton
-          tournament={tournament}
-          playerId={match.player1Id}
-          selected={match.winnerId === match.player1Id}
-          disabled={!canPick || !bothReady}
-          onClick={() => match.player1Id && onPickWinner(match.id, match.player1Id)}
-        />
-        <PlayerButton
-          tournament={tournament}
-          playerId={match.player2Id}
-          selected={match.winnerId === match.player2Id}
-          disabled={!canPick || !bothReady}
-          onClick={() => match.player2Id && onPickWinner(match.id, match.player2Id)}
-        />
-      </div>
-    </div>
+      <MatchResultFx payload={fx} onDone={clearFx} />
+    </>
   )
 }
