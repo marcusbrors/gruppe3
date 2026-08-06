@@ -91,7 +91,7 @@ export function MatchResultFx({ payload, onDone }: MatchResultFxProps) {
         </div>
 
         {/* Loser card */}
-        <div className="fx-loser relative overflow-hidden rounded-2xl border border-forest/20 bg-surface/90 px-5 py-4 text-center shadow-lg">
+        <div className="fx-loser pointer-events-none relative overflow-hidden rounded-2xl border border-forest/20 bg-surface/90 px-5 py-4 text-center shadow-lg">
           {boom.map((p) => (
             <span
               key={p.id}
