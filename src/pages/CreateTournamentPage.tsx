@@ -1,0 +1,101 @@
+import { useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useTournaments } from '../context/TournamentContext'
+import type { TournamentFormat } from '../types/tournament'
+import { FORMAT_LABELS } from '../types/tournament'
+
+const SAMPLE_PLAYERS = 'Alex\nSam\nJordan\nCasey\nRiley\nMorgan\nQuinn\nAvery'
+
+export function CreateTournamentPage() {
+  const { addTournament } = useTournaments()
+  const navigate = useNavigate()
+  const [name, setName] = useState('')
+  const [format, setFormat] = useState<TournamentFormat>('single_elimination')
+  const [playersText, setPlayersText] = useState(SAMPLE_PLAYERS)
+  const [error, setError] = useState('')
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    setError('')
+    const players = playersText
+      .split(/\n|,/)
+      .map((p) => p.trim())
+      .filter(Boolean)
+
+    try {
+      const t = addTournament(name || 'Demo-turnering', format, players)
+      navigate(`/turnering/${t.id}`)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Noe gikk galt')
+    }
+  }
+
+  return (
+    <div className="mx-auto max-w-xl animate-fade-up">
+      <h1 className="font-display text-3xl font-extrabold text-ink sm:text-4xl">Ny turnering</h1>
+      <p className="mt-2 text-forest/70">
+        Velg oppsett, legg til deltakere — så genereres kamper automatisk.
+      </p>
+
+      <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
+        <label className="flex flex-col gap-2">
+          <span className="text-sm font-semibold text-forest">Navn</span>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="f.eks. Fredags-cup"
+            className="rounded-md border border-forest/15 bg-white/80 px-3 py-2.5 outline-none ring-moss/30 focus:ring-2"
+          />
+        </label>
+
+        <fieldset>
+          <legend className="mb-2 text-sm font-semibold text-forest">Turneringsoppsett</legend>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            {(Object.keys(FORMAT_LABELS) as TournamentFormat[]).map((key) => (
+              <label
+                key={key}
+                className={[
+                  'flex flex-1 cursor-pointer items-center gap-2 rounded-md border px-3 py-3 text-sm transition',
+                  format === key
+                    ? 'border-moss bg-mint/50 text-forest'
+                    : 'border-forest/15 bg-white/60 text-forest/70 hover:border-moss/40',
+                ].join(' ')}
+              >
+                <input
+                  type="radio"
+                  name="format"
+                  value={key}
+                  checked={format === key}
+                  onChange={() => setFormat(key)}
+                  className="accent-moss"
+                />
+                {FORMAT_LABELS[key]}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <label className="flex flex-col gap-2">
+          <span className="text-sm font-semibold text-forest">
+            Deltakere <span className="font-normal text-forest/50">(én per linje)</span>
+          </span>
+          <textarea
+            value={playersText}
+            onChange={(e) => setPlayersText(e.target.value)}
+            rows={8}
+            className="rounded-md border border-forest/15 bg-white/80 px-3 py-2.5 font-mono text-sm outline-none ring-moss/30 focus:ring-2"
+          />
+        </label>
+
+        {error && <p className="text-sm font-medium text-coral">{error}</p>}
+
+        <button
+          type="submit"
+          className="rounded-md bg-forest px-5 py-3 text-sm font-semibold text-mint transition hover:bg-moss"
+        >
+          Opprett og start
+        </button>
+      </form>
+    </div>
+  )
+}
