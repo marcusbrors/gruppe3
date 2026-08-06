@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { BrandAccentBar } from '../components/BrandDecor'
 import { BracketView } from '../components/BracketView'
+import { ExportImageButton } from '../components/ExportImageButton'
 import { MatchCard } from '../components/MatchCard'
 import { PlayerHoverName } from '../components/PlayerHoverName'
 import { RoundsView } from '../components/RoundsView'
@@ -40,9 +41,12 @@ export function TournamentDetailPage() {
 
   return (
     <div className="animate-fade-up">
-      <Link to="/" className="mb-4 inline-block text-sm text-forest/50 transition hover:text-forest">
-        ← Oversikt
-      </Link>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <Link to="/" className="text-sm text-forest/50 transition hover:text-forest">
+          ← Oversikt
+        </Link>
+        <ExportImageButton tournament={tournament} />
+      </div>
 
       <div className="rounded-2xl border border-forest/10 bg-surface/40 p-5 sm:p-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
