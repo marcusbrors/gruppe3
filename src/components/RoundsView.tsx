@@ -1,5 +1,6 @@
 import type { Tournament } from '../types/tournament'
-import { getRounds, roundLabel } from '../lib/tournamentLogic'
+import { getRounds } from '../lib/tournamentLogic'
+import { useLocale } from '../context/LocaleContext'
 import { MatchCard } from './MatchCard'
 
 interface RoundsViewProps {
@@ -8,6 +9,7 @@ interface RoundsViewProps {
 }
 
 export function RoundsView({ tournament, onPickWinner }: RoundsViewProps) {
+  const { locale, roundName } = useLocale()
   const rounds = getRounds(tournament.matches)
   const totalRounds = tournament.totalRounds ?? rounds.length
 
@@ -21,10 +23,10 @@ export function RoundsView({ tournament, onPickWinner }: RoundsViewProps) {
         return (
           <section key={round}>
             <h3 className="mb-3 font-display text-sm font-bold uppercase tracking-wider text-forest/60">
-              {roundLabel(tournament.format, round, totalRounds)}
+              {roundName(tournament.format, round, totalRounds)}
               {tournament.format === 'swiss' && totalRounds > 0 && (
                 <span className="ml-2 font-normal normal-case tracking-normal text-forest/40">
-                  av {totalRounds}
+                  {locale === 'en' ? `of ${totalRounds}` : `av ${totalRounds}`}
                 </span>
               )}
             </h3>

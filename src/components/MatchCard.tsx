@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import type { Match, Tournament } from '../types/tournament'
 import { formatPlayerLabel, getPlayerName } from '../lib/tournamentLogic'
+import { useLocale } from '../context/LocaleContext'
 import { MatchResultFx, type MatchFxPayload } from './MatchResultFx'
 import { PlayerHoverName } from './PlayerHoverName'
 
@@ -16,12 +17,14 @@ function PlayerButton({
   selected,
   disabled,
   onClick,
+  winnerLabel,
 }: {
   tournament: Tournament
   playerId: string | null
   selected: boolean
   disabled: boolean
   onClick: () => void
+  winnerLabel: string
 }) {
   const label = formatPlayerLabel(tournament, playerId)
   const isTbd = !playerId
@@ -51,12 +54,15 @@ function PlayerButton({
           />
         )}
       </span>
-      {selected && <span className="shrink-0 text-xs uppercase tracking-wide opacity-80">Vinner</span>}
+      {selected && (
+        <span className="shrink-0 text-xs uppercase tracking-wide opacity-80">{winnerLabel}</span>
+      )}
     </button>
   )
 }
 
 export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
+  const { t } = useLocale()
   const [fx, setFx] = useState<MatchFxPayload | null>(null)
   const canPick = match.status === 'ready' || match.status === 'completed'
   const bothReady = Boolean(match.player1Id && match.player2Id)
@@ -80,9 +86,9 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
   if (match.isBye) {
     return (
       <div className="rounded-lg border border-dashed border-forest/15 bg-surface/40 p-3">
-        <div className="mb-1 text-xs text-forest/50">Bye</div>
+        <div className="mb-1 text-xs text-forest/50">{t('bye')}</div>
         <p className="text-sm font-medium text-forest">
-          <PlayerHoverName tournament={tournament} playerId={match.player1Id} /> går videre
+          <PlayerHoverName tournament={tournament} playerId={match.player1Id} /> {t('advances')}
         </p>
       </div>
     )
@@ -92,13 +98,15 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
     <>
       <div className="rounded-lg border border-forest/10 bg-surface/60 p-3 shadow-sm backdrop-blur-sm">
         <div className="mb-2 flex items-center justify-between text-xs text-forest/50">
-          <span>Kamp #{match.index + 1}</span>
+          <span>
+            {t('match')} #{match.index + 1}
+          </span>
           <span>
             {match.status === 'completed'
-              ? 'Ferdig'
+              ? t('done')
               : match.status === 'ready'
-                ? 'Klar'
-                : 'Venter'}
+                ? t('ready')
+                : t('waiting')}
           </span>
         </div>
         <div className="flex flex-col gap-1.5">
@@ -108,6 +116,7 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
             selected={match.winnerId === match.player1Id}
             disabled={!canPick || !bothReady}
             onClick={() => match.player1Id && pick(match.player1Id)}
+            winnerLabel={t('winnerLabel')}
           />
           <PlayerButton
             tournament={tournament}
@@ -115,6 +124,7 @@ export function MatchCard({ tournament, match, onPickWinner }: MatchCardProps) {
             selected={match.winnerId === match.player2Id}
             disabled={!canPick || !bothReady}
             onClick={() => match.player2Id && pick(match.player2Id)}
+            winnerLabel={t('winnerLabel')}
           />
         </div>
       </div>
