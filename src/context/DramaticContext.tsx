@@ -2,12 +2,15 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from 'react'
 
 interface DramaticContextValue {
   dramatic: boolean
+  /** Øker hver gang knappen trykkes — brukes for å restarte animasjon */
+  pulse: number
   toggleDramatic: () => void
 }
 
@@ -22,6 +25,8 @@ export function DramaticProvider({ children }: { children: ReactNode }) {
       return false
     }
   })
+  const [pulse, setPulse] = useState(0)
+  const transitionTimer = useRef<number | null>(null)
 
   useEffect(() => {
     document.documentElement.classList.toggle('dramatic', dramatic)
@@ -29,15 +34,24 @@ export function DramaticProvider({ children }: { children: ReactNode }) {
   }, [dramatic])
 
   const toggleDramatic = () => {
-    document.documentElement.classList.add('dramatic-transitioning')
-    window.setTimeout(() => {
-      document.documentElement.classList.remove('dramatic-transitioning')
+    // Tving CSS-animasjon til å restarte hver gang
+    const root = document.documentElement
+    root.classList.remove('dramatic-transitioning')
+    // force reflow
+    void root.offsetWidth
+    root.classList.add('dramatic-transitioning')
+
+    if (transitionTimer.current) window.clearTimeout(transitionTimer.current)
+    transitionTimer.current = window.setTimeout(() => {
+      root.classList.remove('dramatic-transitioning')
     }, 900)
+
+    setPulse((p) => p + 1)
     setDramatic((v) => !v)
   }
 
   return (
-    <DramaticContext.Provider value={{ dramatic, toggleDramatic }}>
+    <DramaticContext.Provider value={{ dramatic, pulse, toggleDramatic }}>
       {children}
     </DramaticContext.Provider>
   )
